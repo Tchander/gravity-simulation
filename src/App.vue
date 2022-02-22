@@ -1,113 +1,63 @@
 <template>
-    <div id="app"></div>
+    <div>
+        <canvas class="canvas" ref="canvas"></canvas>
+    </div>
 </template>
 
 <script>
+import Canvas from '@/helpers/canvas';
+import AstroObject from '@/helpers/astroObject';
+
 export default {
     name: 'App',
+    data() {
+        return {
+            canvas: null,
+            astroObjects: [],
+            sun: {
+                speedX: 0,
+                speedY: 0,
+                radius: 50,
+                mass: 10,
+                drawSpeed: false,
+                drawForce: false,
+            },
+        };
+    },
+
+    mounted() {
+        this.canvas = new Canvas(this.$refs.canvas);
+        this.pushObjects();
+        this.canvas.add(...this.astroObjects);
+        requestAnimationFrame(this.tick);
+    },
+
+    methods: {
+        pushObjects() {
+            this.astroObjects.push(
+                new AstroObject({
+                    positionX: this.canvas.view.width / 2,
+                    positionY: this.canvas.view.height / 2,
+                    ...this.sun,
+                }),
+            );
+        },
+
+        tick() {
+            requestAnimationFrame(this.tick);
+            this.canvas.clear();
+            this.canvas.draw('#dcc770');
+        },
+    },
 };
 </script>
 
+<style>
+@import 'assets/global.scss';
+</style>
+
 <style lang="scss">
-html,
-body,
-div,
-span,
-applet,
-object,
-iframe,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-blockquote,
-pre,
-a,
-abbr,
-acronym,
-address,
-big,
-cite,
-code,
-del,
-dfn,
-em,
-img,
-ins,
-kbd,
-q,
-s,
-samp,
-small,
-strike,
-strong,
-sub,
-sup,
-tt,
-var,
-b,
-u,
-i,
-center,
-dl,
-dt,
-dd,
-ol,
-ul,
-li,
-fieldset,
-form,
-label,
-legend,
-table,
-caption,
-tbody,
-tfoot,
-thead,
-tr,
-th,
-td,
-article,
-aside,
-canvas,
-details,
-embed,
-figure,
-figcaption,
-footer,
-header,
-menu,
-nav,
-output,
-ruby,
-section,
-summary,
-time,
-mark,
-audio,
-video {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font-size: 100%;
-    vertical-align: baseline;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-html,
-body {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-input {
-    margin-top: 0;
-    margin-bottom: 0;
+.canvas {
+    background-color: #000;
 }
 </style>
