@@ -9,9 +9,9 @@ export default class AstroObject {
         this.radius = params.radius ?? 1;
         this.mass = params.mass ?? 1;
 
-        this.forces = [];
+        this.color = params.color;
 
-        // this.canvas = canvas;
+        this.forces = [];
 
         this.drawSpeed = params.drawSpeed ?? true;
         this.drawForce = params.drawForce ?? true;
@@ -21,12 +21,12 @@ export default class AstroObject {
         return Vector.get().add(...this.forces);
     }
 
-    draw(canvas, color) {
+    draw(canvas) {
         canvas.drawCircle({
             x: this.position.x,
             y: this.position.y,
             r: this.radius,
-            fillStyle: color,
+            fillStyle: this.color,
         });
 
         if (this.drawSpeed) {
